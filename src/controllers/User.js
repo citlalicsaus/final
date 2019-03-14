@@ -3,9 +3,15 @@ import bcrypt from 'bcrypt';
 import User from '../models/user';
 import Beer from '../models/beer';
 import { SECRET, SALTINESS } from '../config';
-import onPromiseError from './utils';
+import onPromiseError, { valUserType } from './utils';
 
 const onGetList = (req, res) => {
+  if (!valUserType(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso',
+    });
+    return;
+  }
   const onUsersFound = (users) => {
     res.json({
       message: 'se ha realizado con exito',
@@ -20,6 +26,11 @@ const onGetList = (req, res) => {
 
 const onGetEntity = (req, res) => {
   const { id } = req.params;
+  if (req.user.type === 'mortal' && req.user._id !== id) {
+    res.status(500).json("Can't checkout other users dude!");
+    return;
+  }
+
   const onUserFound = (user) => {
     res.json({
       message: 'se ha realizado con exito',
@@ -34,6 +45,12 @@ const onGetEntity = (req, res) => {
 };
 
 const onCreateEntity = (req, res) => {
+  if (!valUserType(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso',
+    });
+    return;
+  }
   const { name, email, password } = req.body;
   const onSaltHash = (hash) => {
     const newUser = new User({
@@ -61,6 +78,12 @@ const onCreateEntity = (req, res) => {
 
 const onUpdateEntity = (req, res) => {
   const { id } = req.params;
+
+  if (req.user.type === 'mortal' && req.user._id !== id) {
+    res.status(500).json("Can't checkout other users dude!");
+    return;
+  }
+
   const { name, email, password } = req.body;
   const onUserFound = (user) => {
     user.name = name;
@@ -84,6 +107,10 @@ const onUpdateEntity = (req, res) => {
 
 const onDeleteEntity = (req, res) => {
   const { id } = req.params;
+  if (req.user.type === 'mortal' && req.user._id !== id) {
+    res.status(500).json("Can't checkout other users dude!");
+    return;
+  }
   const onUserDeleted = () => {
     res.json({ message: 'Usuario borrado correctamente' });
   };

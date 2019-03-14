@@ -1,9 +1,22 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  password: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: ['admin', 'mortal'],
+  },
   beersTaken: [
     {
       type: mongoose.Schema.Types.ObjectId,

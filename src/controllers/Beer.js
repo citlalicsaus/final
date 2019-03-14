@@ -1,5 +1,5 @@
 import Beer from '../models/beer';
-import onPromiseError from './utils';
+import onPromiseError, { valUserType } from './utils';
 
 const onGetList = (req, res) => {
   const onBeersFound = (beers) => {
@@ -29,6 +29,12 @@ const onGetEntity = (req, res) => {
 };
 
 const onCreateEntity = (req, res) => {
+  if (!valUserType(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso',
+    });
+    return;
+  }
   const beer = Beer(req.body);
   const onBeerCreated = (beerCreated) => {
     res.json({
@@ -43,6 +49,12 @@ const onCreateEntity = (req, res) => {
 };
 
 const onUpdateEntity = (req, res) => {
+  if (!valUserType(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso',
+    });
+    return;
+  }
   const { id } = req.params;
   const {
     name, nameDisplay, abv, isOrganic, isRetired, status, statusDisplay,
@@ -72,6 +84,12 @@ const onUpdateEntity = (req, res) => {
 };
 
 const onDeleteEntity = (req, res) => {
+  if (!valUserType(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso',
+    });
+    return;
+  }
   const { id } = req.params;
   const onBeerDeleted = () => {
     res.json({

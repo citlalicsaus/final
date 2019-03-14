@@ -3,3 +3,13 @@ export default res => ({ message }) => {
     message,
   });
 };
+
+export const valUserType = (user, typeNeeded) => {
+  if (typeof typeNeeded === 'string') {
+    return user.type === typeNeeded;
+  }
+  if (typeof typeNeeded === 'array') {
+    return typeNeeded.indexOf(user.type) >= 0;
+  }
+  throw new Error('Bad typeNeeded');
+};
