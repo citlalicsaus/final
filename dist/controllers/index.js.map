@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/controllers/index.js"],"names":["app"],"mappings":";;;;;;;AAAA;;AACA;;;;eAEgBA,GAAD,IAAS;AACtB,qBAAeA,GAAf;AACA,qBAAeA,GAAf;AACD,C","sourcesContent":["import beerController from './Beer';\nimport userController from './User';\n\nexport default (app) => {\n  beerController(app);\n  userController(app);\n};\n"],"file":"index.js"}

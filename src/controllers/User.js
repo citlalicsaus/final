@@ -93,33 +93,30 @@ const onDeleteEntity = (req, res) => {
 };
 
 const onDrankBeer = (req, res) => {
-  const { id, beerID } = req.params;
-  const onUserFound = (userFound) => {
-    if (!userFound) {
-      return res.status(404).json({ message: 'User not found' });
+  if (!req.user) {
+    res.status(400).json({
+      message: 'Permiso denegado',
+    });
+    return;
+  }
+  const { beerID } = req.params;
+  const onBeerFound = (beerFound) => {
+    if (!beerFound) {
+      res.status(404).json({ message: 'cheve no enctrada' });
     }
-    return userFound;
-  };
-  const findBeer = (user) => {
-    const onBeerFound = (beerFound) => {
-      user.beersTaken.push(beerFound._id);
-      const onUserSaved = () => {
-        res.json({
-          message: 'User drank a beer successfully',
-        });
-      };
-      user
-        .save()
-        .then(onUserSaved)
-        .catch(onPromiseError(res));
+    req.user.beersTaken.push(beerFound._id);
+    const onUserSaved = () => {
+      res.json({
+        message: 'User drank a beer successfully',
+      });
     };
-    Beer.findOne({ _id: beerID })
-      .then(onBeerFound)
+    req.user
+      .save()
+      .then(onUserSaved)
       .catch(onPromiseError(res));
   };
-  User.findOne({ _id: id })
-    .then(onUserFound)
-    .then(findBeer)
+  Beer.findOne({ _id: beerID })
+    .then(onBeerFound)
     .catch(onPromiseError(res));
 };
 
@@ -135,25 +132,25 @@ const onLogin = (req, res) => {
       if (!isEqual) {
         res.status(300).json({ message: 'wrong password' });
       }
-      const token = jwt.sign({ id: user._id }, SECRET, { expiresIn: 240 });
+      const token = jwt.sign(
+        {
+          id: user._id,
+        },
+        SECRET,
+        { expiresIn: 240 },
+      );
       res.json({ auth: true, token });
     };
-    const onCompareError = ({ message }) => {
-      res.status(500).send({ message });
-    };
+
     bcrypt
       .compare(password, user.password)
       .then(onCompare)
-      .catch(onCompareError);
+      .catch(onPromiseError(res));
   };
-  const onUserFoundError = ({ message }) => {
-    res.status(500).json({
-      message,
-    });
-  };
+
   User.findOne({ email })
     .then(onUserFound)
-    .catch(onUserFoundError);
+    .catch(onPromiseError(res));
 };
 
 export default (app) => {
@@ -162,6 +159,6 @@ export default (app) => {
   app.post('/user', onCreateEntity);
   app.post('/user/login', onLogin);
   app.put('/user/:id', onUpdateEntity);
-  app.put('/user/:id/drank/:beerID', onDrankBeer);
+  app.put('/user/drank/:beerID', onDrankBeer);
   app.delete('/user/:id', onDeleteEntity);
 };

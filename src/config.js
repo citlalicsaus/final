@@ -7,5 +7,5 @@ export default function dbConnect() {
   );
 }
 
-export const SECRET = 'askjf3njnri3infsi3838fn91291n1n91d9d3nu3jf3ij92i93';
+export const SECRET = 'asjkljksajkaskjlsalkaslksa';
 export const SALTINESS = 8;

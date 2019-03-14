@@ -5,7 +5,7 @@ import dbConnect from './config';
 import auth from './middlewares/auth';
 
 dbConnect();
-const PORT = 8080;
+const { PORT = 3000 } = process.env;
 const app = express();
 const onServerCreated = () => {
   console.log('el servidor ha sido creado correctamente');

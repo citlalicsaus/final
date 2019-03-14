@@ -7,7 +7,13 @@
   "license": "ISC",
   "scripts": {
     "babel-node": "babel-node",
-    "start": "nodemon --config nodemon.js"
+    "start": "npm run build && node ./dist/index.js",
+    "clean": "rm -rf dist && mkdir dist",
+    "build-babel": "babel -d ./dist ./src -s",
+    "build": "npm run clean && npm run build-babel"
+  },
+  "engines": {
+    "node": "10.15.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
