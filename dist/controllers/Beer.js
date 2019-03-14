@@ -7,7 +7,9 @@ exports.default = void 0;
 
 var _beer = _interopRequireDefault(require("../models/beer"));
 
-var _utils = _interopRequireDefault(require("./utils"));
+var _utils = _interopRequireWildcard(require("./utils"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40,6 +42,13 @@ const onGetEntity = (req, res) => {
 };
 
 const onCreateEntity = (req, res) => {
+  if (!(0, _utils.valUserType)(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso'
+    });
+    return;
+  }
+
   const beer = (0, _beer.default)(req.body);
 
   const onBeerCreated = beerCreated => {
@@ -53,6 +62,13 @@ const onCreateEntity = (req, res) => {
 };
 
 const onUpdateEntity = (req, res) => {
+  if (!(0, _utils.valUserType)(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso'
+    });
+    return;
+  }
+
   const {
     id
   } = req.params;
@@ -91,6 +107,13 @@ const onUpdateEntity = (req, res) => {
 };
 
 const onDeleteEntity = (req, res) => {
+  if (!(0, _utils.valUserType)(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso'
+    });
+    return;
+  }
+
   const {
     id
   } = req.params;

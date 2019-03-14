@@ -15,11 +15,20 @@ var _beer = _interopRequireDefault(require("../models/beer"));
 
 var _config = require("../config");
 
-var _utils = _interopRequireDefault(require("./utils"));
+var _utils = _interopRequireWildcard(require("./utils"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const onGetList = (req, res) => {
+  if (!(0, _utils.valUserType)(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso'
+    });
+    return;
+  }
+
   const onUsersFound = users => {
     res.json({
       message: 'se ha realizado con exito',
@@ -35,6 +44,11 @@ const onGetEntity = (req, res) => {
     id
   } = req.params;
 
+  if (req.user.type === 'mortal' && req.user._id !== id) {
+    res.status(500).json("Can't checkout other users dude!");
+    return;
+  }
+
   const onUserFound = user => {
     res.json({
       message: 'se ha realizado con exito',
@@ -48,6 +62,13 @@ const onGetEntity = (req, res) => {
 };
 
 const onCreateEntity = (req, res) => {
+  if (!(0, _utils.valUserType)(req.user, 'admin')) {
+    res.status(500).json({
+      message: 'Usuario sin permiso'
+    });
+    return;
+  }
+
   const {
     name,
     email,
@@ -79,6 +100,12 @@ const onUpdateEntity = (req, res) => {
   const {
     id
   } = req.params;
+
+  if (req.user.type === 'mortal' && req.user._id !== id) {
+    res.status(500).json("Can't checkout other users dude!");
+    return;
+  }
+
   const {
     name,
     email,
@@ -109,6 +136,11 @@ const onDeleteEntity = (req, res) => {
   const {
     id
   } = req.params;
+
+  if (req.user.type === 'mortal' && req.user._id !== id) {
+    res.status(500).json("Can't checkout other users dude!");
+    return;
+  }
 
   const onUserDeleted = () => {
     res.json({

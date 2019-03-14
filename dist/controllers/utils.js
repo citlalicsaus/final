@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.valUserType = exports.default = void 0;
 
 var _default = res => ({
   message
@@ -14,3 +14,17 @@ var _default = res => ({
 };
 
 exports.default = _default;
+
+const valUserType = (user, typeNeeded) => {
+  if (typeof typeNeeded === 'string') {
+    return user.type === typeNeeded;
+  }
+
+  if (typeof typeNeeded === 'array') {
+    return typeNeeded.indexOf(user.type) >= 0;
+  }
+
+  throw new Error('Bad typeNeeded');
+};
+
+exports.valUserType = valUserType;
