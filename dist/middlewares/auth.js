@@ -42,4 +42,3 @@ exports.default = _default;
 const registerPath = () => {};
 
 exports.registerPath = registerPath;
-//# sourceMappingURL=auth.js.map

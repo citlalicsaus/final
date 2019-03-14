@@ -20,4 +20,3 @@ const SECRET = 'asjkljksajkaskjlsalkaslksa';
 exports.SECRET = SECRET;
 const SALTINESS = 8;
 exports.SALTINESS = SALTINESS;
-//# sourceMappingURL=config.js.map

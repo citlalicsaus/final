@@ -23,4 +23,3 @@ const beerSchema = new _mongoose.default.Schema({
 var _default = _mongoose.default.model('Beer', beerSchema);
 
 exports.default = _default;
-//# sourceMappingURL=beer.js.map

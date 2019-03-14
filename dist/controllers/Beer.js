@@ -115,4 +115,3 @@ var _default = app => {
 };
 
 exports.default = _default;
-//# sourceMappingURL=Beer.js.map

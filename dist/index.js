@@ -26,4 +26,3 @@ app.use(_bodyParser.default.json());
 app.use(_auth.default);
 (0, _controllers.default)(app);
 app.listen(PORT, onServerCreated);
-//# sourceMappingURL=index.js.map

@@ -72,4 +72,3 @@ const getNextBeers = () => {
 };
 
 getNextBeers();
-//# sourceMappingURL=backup.index.js.map
