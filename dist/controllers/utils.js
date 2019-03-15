@@ -16,6 +16,10 @@ var _default = res => ({
 exports.default = _default;
 
 const valUserType = (user, typeNeeded) => {
+  if (!user) {
+    return false;
+  }
+
   if (typeof typeNeeded === 'string') {
     return user.type === typeNeeded;
   }
