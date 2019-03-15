@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "babel-node": "babel-node",
-    "dev": "nodemon --config nodemon.js",
+    "dev": "nodemon --config nodemon.jsx",
     "build": "rm -rf dist && mkdir dist && babel ./src -d ./dist",
     "start": "node ./dist/index.js"
   },
